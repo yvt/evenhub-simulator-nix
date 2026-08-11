@@ -15,3 +15,7 @@ nix run github:yvt/evenhub-simulator-nix -- http://localhost:12321
 ```
 
 The `evenhub-simulator-headless` package is provided for headless testing.
+
+## License
+
+This work is licensed under [the MIT License](LICENSE).
