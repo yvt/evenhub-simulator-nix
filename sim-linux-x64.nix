@@ -2,14 +2,25 @@
 {
   fetchurl,
   stdenv,
+  lib,
   nodejs,
   autoPatchelfHook,
+  installShellFiles,
   gtk3,
   webkitgtk_4_1,
   alsa-lib,
+  xvfb-run,
   ...
 }:
 
+let
+  generateCompletion = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
+    installShellCompletion --cmd evenhub-simulator \
+      --bash <(xvfb-run -n 120 $out/bin/evenhub-simulator --completions bash) \
+      --zsh <(xvfb-run -n 121 $out/bin/evenhub-simulator --completions zsh) \
+      --fish <(xvfb-run -n 122 $out/bin/evenhub-simulator --completions fish)
+  '';
+in
 stdenv.mkDerivation rec {
   pname = "evenhub-simulator";
   version = "0.8.0";
@@ -22,6 +33,8 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     nodejs
     autoPatchelfHook
+    installShellFiles
+    xvfb-run
   ];
 
   buildInputs = [
@@ -41,4 +54,12 @@ stdenv.mkDerivation rec {
 
     runHook postInstall
   '';
+
+  preFixup = ''
+    _generateCompletion() {
+      ${generateCompletion}
+    }
+    postFixupHooks+=(_generateCompletion)
+  '';
+
 }
