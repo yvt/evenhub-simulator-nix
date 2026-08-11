@@ -13,7 +13,6 @@
       in
       rec {
         evenhub-simulator = pkgs.callPackage ./sim-linux-x64.nix { };
-
         default = evenhub-simulator;
 
         evenhub-simulator-headless = pkgs.writeShellApplication {
@@ -27,6 +26,8 @@
             exec xvfb-run --auto-display evenhub-simulator "$@"
           '';
         };
+
+        example-minimal = pkgs.callPackage ./example-minimal.nix { };
       };
   };
 }

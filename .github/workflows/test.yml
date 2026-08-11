@@ -1,0 +1,16 @@
+name: "Test"
+on:
+  pull_request:
+  push:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - uses: cachix/install-nix-action@v31
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#evenhub-simulator-headless --no-link --print-build-logs
+    - run: |
+        nix-shell -p 'python3.withPackages (p: [ p.pillow p.requests ])' \
+          --run 'xvfb-run python test.py'

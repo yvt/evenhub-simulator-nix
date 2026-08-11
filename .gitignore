@@ -3,3 +3,6 @@
 
 # evenhub-simulator output
 glasses_*.png
+
+# Cache
+__pycache__
