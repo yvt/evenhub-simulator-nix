@@ -1,0 +1,5 @@
+# Nix output
+/result
+
+# evenhub-simulator output
+glasses_*.png
